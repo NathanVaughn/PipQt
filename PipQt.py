@@ -1,9 +1,8 @@
-# Version 1.0
+# Version 1.1
 
 import sys
 import PyQt4.QtGui as Gui
 import PyQt4.QtCore as Core
-import time
 
 
 class pip_data():
