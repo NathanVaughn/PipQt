@@ -3,6 +3,7 @@
 import sys
 import PyQt4.QtGui as Gui
 import PyQt4.QtCore as Core
+import time
 
 
 class pip_data():
@@ -62,7 +63,10 @@ class pip_data():
         return out + up
 
     def update_packages(self, packages):
-        packages = " ".join(packages)
+        command = ["install", "--upgrade"]
+
+        for package in packages:
+            command.append(package)
 
         self.output = output_widget(self)
         self.output.build()
@@ -72,14 +76,17 @@ class pip_data():
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
         self.process.readyRead.connect(self.output.data_ready)
-        self.process.start("pip", ["install", "--upgrade", packages])
+        self.process.start("pip", command)
 
         self.process.waitForFinished()
 
         self.output.close()
 
     def install_packages(self, packages):
-        packages = " ".join(packages)
+        command = ["install"]
+
+        for package in packages:
+            command.append(package)
 
         self.output = output_widget(self)
         self.output.build()
@@ -89,14 +96,19 @@ class pip_data():
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
         self.process.readyRead.connect(self.output.data_ready)
-        self.process.start("pip", ["install", packages])
+        self.process.start("pip", command)
 
         self.process.waitForFinished()
 
         self.output.close()
 
     def delete_packages(self, packages):
-        packages = " ".join(packages)
+        command = ["uninstall"]
+
+        for package in packages:
+            command.append(package)
+
+        command.append("-y")
 
         self.output = output_widget(self)
         self.output.build()
@@ -106,7 +118,7 @@ class pip_data():
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
         self.process.readyRead.connect(self.output.data_ready)
-        self.process.start("pip", ["uninstall", packages, '-y'])
+        self.process.start("pip", command)
 
         self.process.waitForFinished()
 
