@@ -1,6 +1,7 @@
-# Version 1.1
+# Version 1.2
 
 import sys
+import webbrowser
 import PyQt4.QtGui as Gui
 import PyQt4.QtCore as Core
 
@@ -124,6 +125,149 @@ class pip_data():
         self.output.close()
 
 
+class info_widget(Gui.QWidget):
+    def __init__(self, parent=None):
+        Gui.QWidget.__init__(self)
+        self.parent = parent
+
+    def build(self):
+        self.setWindowTitle("Info")
+        self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
+        self.setWindowModality(Core.Qt.ApplicationModal)
+
+        self.layout = Gui.QGridLayout()
+
+        self.name_label = Gui.QLabel("Name:")
+        self.layout.addWidget(self.name_label, 0, 0)
+
+        self.name = Gui.QLineEdit()
+        self.name.setReadOnly(True)
+        self.layout.addWidget(self.name, 0, 1)
+
+        self.version_label = Gui.QLabel("Version:")
+        self.layout.addWidget(self.version_label, 1, 0)
+
+        self.version = Gui.QLineEdit()
+        self.version.setReadOnly(True)
+        self.layout.addWidget(self.version, 1, 1)
+
+        self.summary_label = Gui.QLabel("Summary:")
+        self.layout.addWidget(self.summary_label, 2, 0)
+
+        self.summary = Gui.QLineEdit()
+        self.summary.setReadOnly(True)
+        self.layout.addWidget(self.summary, 2, 1)
+
+        self.homepage_label = Gui.QLabel("Homepage:")
+        self.layout.addWidget(self.homepage_label, 3, 0)
+
+        self.homepage = Gui.QLineEdit()
+        self.homepage.setReadOnly(True)
+        self.layout.addWidget(self.homepage, 3, 1)
+
+        self.sub_layout = Gui.QHBoxLayout()
+
+        self.homepage_button = Gui.QPushButton("Open Homepage")
+        self.sub_layout.addWidget(self.homepage_button)
+
+        self.pypi_button = Gui.QPushButton("Open on PyPi")
+        self.sub_layout.addWidget(self.pypi_button)
+        self.layout.addLayout(self.sub_layout, 4, 0, 2, 2)
+
+        self.author_label = Gui.QLabel("Author(s):")
+        self.layout.addWidget(self.author_label, 6, 0)
+
+        self.author = Gui.QLineEdit()
+        self.author.setReadOnly(True)
+        self.layout.addWidget(self.author, 6, 1)
+
+        self.author_email_label = Gui.QLabel("Author Email:")
+        self.layout.addWidget(self.author_email_label, 7, 0)
+
+        self.author_email = Gui.QLineEdit()
+        self.author_email.setReadOnly(True)
+        self.layout.addWidget(self.author_email, 7, 1)
+
+        self.license_label = Gui.QLabel("License:")
+        self.layout.addWidget(self.license_label, 8, 0)
+
+        self.license = Gui.QLineEdit()
+        self.license.setReadOnly(True)
+        self.layout.addWidget(self.license, 8, 1)
+
+        self.requirements_label = Gui.QLabel("Requirements:")
+        self.layout.addWidget(self.requirements_label, 9, 0)
+
+        self.requirements = Gui.QLineEdit()
+        self.requirements.setReadOnly(True)
+        self.layout.addWidget(self.requirements, 9, 1)
+
+        self.location_label = Gui.QLabel("Location:")
+        self.layout.addWidget(self.location_label, 10, 0)
+
+        self.location = Gui.QLineEdit()
+        self.location.setReadOnly(True)
+        self.layout.addWidget(self.location, 10, 1)
+
+        self.homepage_button.clicked.connect(self.open_homepage)
+        self.pypi_button.clicked.connect(self.open_pypi)
+
+        self.setLayout(self.layout)
+
+        self.show()
+
+        center_widget(self)
+
+    def set_data(self, package):
+        self.process = Core.QProcess()
+        self.process.start("pip", ["show", package])
+        self.process.waitForFinished()
+
+        self.out = bytes(self.process.readAllStandardOutput()).decode()
+
+        name = find_between(self.out, "Name: ", "\n")
+        version = find_between(self.out, "Version: ", "\n")
+        summary = find_between(self.out, "Summary: ", "\n")
+        homepage = find_between(self.out, "Home-page: ", "\n")
+        author = find_between(self.out, "Author: ", "\n")
+        author_email = find_between(self.out, "Author-email: ", "\n")
+        license = find_between(self.out, "License: ", "\n")
+        location = find_between(self.out, "Location: ", "\n")
+        requirements = find_between(self.out, "Requirements: ", "\n")
+
+        self.name.setText(name)
+        self.version.setText(version)
+        self.summary.setText(summary)
+        self.homepage.setText(homepage)
+        self.author.setText(author)
+        self.author_email.setText(author_email)
+        self.license.setText(license)
+        self.location.setText(location)
+        self.requirements.setText(requirements)
+
+        data = []
+        lineedits = [self.name, self.version, self.summary, self.homepage, self.author, self.author_email, self.license, self.location, self.requirements]
+
+        for lineedit in lineedits:
+            data.append(self.get_string_width(lineedit))
+
+        length = max(data) + 10
+
+        for lineedit in lineedits:
+            lineedit.setMinimumWidth(length)
+
+        self.setWindowTitle(name + " Info")
+
+    def open_homepage(self):
+        webbrowser.open(self.homepage.text())
+
+    def open_pypi(self):
+        webbrowser.open("https://pypi.python.org/pypi/" + self.name.text())
+
+    def get_string_width(self, lineedit):
+        return lineedit.fontMetrics().boundingRect(lineedit.text()).width()
+
+
 class wait_widget(Gui.QWidget):
     def build(self):
         self.setWindowTitle("Please wait...")
@@ -213,13 +357,13 @@ class add_widget(Gui.QWidget):
         self.list = Gui.QListWidget()
         self.layout.addWidget(self.list)
 
-        self.sub_layout = Gui.QHBoxLayout()
-
         self.entry = entry(self)
         self.layout.addWidget(self.entry)
 
         # for some reason works
         Core.QTimer.singleShot(0, self.entry.setFocus)
+
+        self.sub_layout = Gui.QHBoxLayout()
 
         self.add_button = Gui.QPushButton("Add")
         self.sub_layout.addWidget(self.add_button)
@@ -342,27 +486,26 @@ class main_widget(Gui.QWidget):
 
         self.add_icon = Gui.QIcon("icons/add_icon.png")
         self.add_button = Gui.QPushButton(self.add_icon, "Add", self)
-        # self.add_button = Gui.QPushButton("Add")
         self.layout.addWidget(self.add_button, 0, 0)
 
         self.delete_icon = Gui.QIcon("icons/delete_icon.png")
         self.delete_button = Gui.QPushButton(self.delete_icon, "Delete", self)
-        # self.delete_button = Gui.QPushButton("Delete")
         self.layout.addWidget(self.delete_button, 0, 1)
 
         self.update_icon = Gui.QIcon("icons/update_icon.png")
         self.update_button = Gui.QPushButton(self.update_icon, "Update", self)
-        # self.update_button = Gui.QPushButton("Update")
         self.layout.addWidget(self.update_button, 0, 3)
 
         self.update_all_icon = Gui.QIcon("icons/update_icon.png")
         self.update_all_button = Gui.QPushButton(self.update_icon, "Update All", self)
-        # self.update_all_button = Gui.QPushButton("Update All")
         self.layout.addWidget(self.update_all_button, 0, 4)
+
+        self.info_icon = Gui.QIcon("icons/info_icon.png")
+        self.info_button = Gui.QPushButton(self.info_icon, "Info", self)
+        self.layout.addWidget(self.info_button, 0, 8)
 
         self.refresh_icon = Gui.QIcon("icons/refresh_icon.png")
         self.refresh_button = Gui.QPushButton(self.refresh_icon, "Refresh", self)
-        # self.refresh_button = Gui.QPushButton("Refresh")
         self.layout.addWidget(self.refresh_button, 0, 9)
 
         self.table = table(self)
@@ -375,6 +518,8 @@ class main_widget(Gui.QWidget):
         self.update_button.clicked.connect(self.update)
         self.update_all_button.clicked.connect(self.update_all)
         self.refresh_button.clicked.connect(self.refresh)
+        self.info_button.clicked.connect(self.info)
+        self.table.doubleClicked.connect(self.info)
 
         self.show()
         self.refresh()
@@ -463,15 +608,32 @@ class main_widget(Gui.QWidget):
     def contextMenuEvent(self, event):
         self.right_click_menu = Gui.QMenu(self)
 
-        updateAction = Gui.QAction('Update', self)
-        updateAction.triggered.connect(self.update)
-        self.right_click_menu.addAction(updateAction)
+        update_action = Gui.QAction('Update', self)
+        update_action.triggered.connect(self.update)
+        self.right_click_menu.addAction(update_action)
 
-        deleteAction = Gui.QAction('Delete', self)
-        deleteAction.triggered.connect(self.delete)
-        self.right_click_menu.addAction(deleteAction)
+        delete_action = Gui.QAction('Delete', self)
+        delete_action.triggered.connect(self.delete)
+        self.right_click_menu.addAction(delete_action)
+
+        info_action = Gui.QAction('Info', self)
+        info_action.triggered.connect(self.info)
+        self.right_click_menu.addAction(info_action)
 
         self.right_click_menu.popup(Gui.QCursor.pos())
+
+    def info(self):
+        self.info_button.setEnabled(False)
+
+        rows = self.get_selected_rows()
+
+        global wid
+        # prevents the garbage collector from immediatley destroying it
+        wid = info_widget(self)
+        wid.build()
+
+        wid.set_data(self.table.item(rows[0], 0).text())
+        self.info_button.setEnabled(True)
 
 
 class main_window(Gui.QMainWindow):
