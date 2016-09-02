@@ -233,7 +233,7 @@ class info_widget(Gui.QWidget):
         author_email = find_between(self.out, "Author-email: ", "\n")
         license = find_between(self.out, "License: ", "\n")
         location = find_between(self.out, "Location: ", "\n")
-        requirements = find_between(self.out, "Requirements: ", "\n")
+        requirements = find_between(self.out, "Requires: ", "\n")
 
         self.name.setText(name)
         self.version.setText(version)
