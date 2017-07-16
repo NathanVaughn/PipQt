@@ -2,8 +2,9 @@
 
 import sys
 import webbrowser
-import PyQt4.QtGui as Gui
-import PyQt4.QtCore as Core
+import PyQt5.QtWidgets as Wid
+import PyQt5.QtGui as Gui
+import PyQt5.QtCore as Core
 
 
 class pip_data():
@@ -53,7 +54,7 @@ class pip_data():
         self.wait = wait_widget()
         self.wait.build()
 
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
         out = self.get_outdated_packages()
         up = self.get_uptodate_packages()
@@ -71,7 +72,7 @@ class pip_data():
         self.output = output_widget(self)
         self.output.build()
 
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
@@ -91,7 +92,7 @@ class pip_data():
         self.output = output_widget(self)
         self.output.build()
 
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
@@ -113,7 +114,7 @@ class pip_data():
         self.output = output_widget(self)
         self.output.build()
 
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
         self.process = Core.QProcess()
         self.process.setProcessChannelMode(Core.QProcess.MergedChannels)
@@ -125,9 +126,9 @@ class pip_data():
         self.output.close()
 
 
-class info_widget(Gui.QWidget):
+class info_widget(Wid.QWidget):
     def __init__(self, parent=None):
-        Gui.QWidget.__init__(self)
+        Wid.QWidget.__init__(self)
         self.parent = parent
 
     def build(self):
@@ -135,77 +136,77 @@ class info_widget(Gui.QWidget):
         self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
         self.setWindowModality(Core.Qt.ApplicationModal)
 
-        self.layout = Gui.QGridLayout()
+        self.layout = Wid.QGridLayout()
 
-        self.name_label = Gui.QLabel("Name:")
+        self.name_label = Wid.QLabel("Name:")
         self.layout.addWidget(self.name_label, 0, 0)
 
-        self.name = Gui.QLineEdit()
+        self.name = Wid.QLineEdit()
         self.name.setReadOnly(True)
         self.layout.addWidget(self.name, 0, 1)
 
-        self.version_label = Gui.QLabel("Version:")
+        self.version_label = Wid.QLabel("Version:")
         self.layout.addWidget(self.version_label, 1, 0)
 
-        self.version = Gui.QLineEdit()
+        self.version = Wid.QLineEdit()
         self.version.setReadOnly(True)
         self.layout.addWidget(self.version, 1, 1)
 
-        self.summary_label = Gui.QLabel("Summary:")
+        self.summary_label = Wid.QLabel("Summary:")
         self.layout.addWidget(self.summary_label, 2, 0)
 
-        self.summary = Gui.QLineEdit()
+        self.summary = Wid.QLineEdit()
         self.summary.setReadOnly(True)
         self.layout.addWidget(self.summary, 2, 1)
 
-        self.homepage_label = Gui.QLabel("Homepage:")
+        self.homepage_label = Wid.QLabel("Homepage:")
         self.layout.addWidget(self.homepage_label, 3, 0)
 
-        self.homepage = Gui.QLineEdit()
+        self.homepage = Wid.QLineEdit()
         self.homepage.setReadOnly(True)
         self.layout.addWidget(self.homepage, 3, 1)
 
-        self.sub_layout = Gui.QHBoxLayout()
+        self.sub_layout = Wid.QHBoxLayout()
 
-        self.homepage_button = Gui.QPushButton("Open Homepage")
+        self.homepage_button = Wid.QPushButton("Open Homepage")
         self.sub_layout.addWidget(self.homepage_button)
 
-        self.pypi_button = Gui.QPushButton("Open on PyPi")
+        self.pypi_button = Wid.QPushButton("Open on PyPi")
         self.sub_layout.addWidget(self.pypi_button)
         self.layout.addLayout(self.sub_layout, 4, 0, 2, 2)
 
-        self.author_label = Gui.QLabel("Author(s):")
+        self.author_label = Wid.QLabel("Author(s):")
         self.layout.addWidget(self.author_label, 6, 0)
 
-        self.author = Gui.QLineEdit()
+        self.author = Wid.QLineEdit()
         self.author.setReadOnly(True)
         self.layout.addWidget(self.author, 6, 1)
 
-        self.author_email_label = Gui.QLabel("Author Email:")
+        self.author_email_label = Wid.QLabel("Author Email:")
         self.layout.addWidget(self.author_email_label, 7, 0)
 
-        self.author_email = Gui.QLineEdit()
+        self.author_email = Wid.QLineEdit()
         self.author_email.setReadOnly(True)
         self.layout.addWidget(self.author_email, 7, 1)
 
-        self.license_label = Gui.QLabel("License:")
+        self.license_label = Wid.QLabel("License:")
         self.layout.addWidget(self.license_label, 8, 0)
 
-        self.license = Gui.QLineEdit()
+        self.license = Wid.QLineEdit()
         self.license.setReadOnly(True)
         self.layout.addWidget(self.license, 8, 1)
 
-        self.requirements_label = Gui.QLabel("Requirements:")
+        self.requirements_label = Wid.QLabel("Requirements:")
         self.layout.addWidget(self.requirements_label, 9, 0)
 
-        self.requirements = Gui.QLineEdit()
+        self.requirements = Wid.QLineEdit()
         self.requirements.setReadOnly(True)
         self.layout.addWidget(self.requirements, 9, 1)
 
-        self.location_label = Gui.QLabel("Location:")
+        self.location_label = Wid.QLabel("Location:")
         self.layout.addWidget(self.location_label, 10, 0)
 
-        self.location = Gui.QLineEdit()
+        self.location = Wid.QLineEdit()
         self.location.setReadOnly(True)
         self.layout.addWidget(self.location, 10, 1)
 
@@ -246,7 +247,9 @@ class info_widget(Gui.QWidget):
         self.requirements.setText(requirements)
 
         data = []
-        lineedits = [self.name, self.version, self.summary, self.homepage, self.author, self.author_email, self.license, self.location, self.requirements]
+        lineedits = [self.name, self.version, self.summary, self.homepage,
+                     self.author, self.author_email, self.license,
+                     self.location, self.requirements]
 
         for lineedit in lineedits:
             data.append(self.get_string_width(lineedit))
@@ -268,14 +271,14 @@ class info_widget(Gui.QWidget):
         return lineedit.fontMetrics().boundingRect(lineedit.text()).width()
 
 
-class wait_widget(Gui.QWidget):
+class wait_widget(Wid.QWidget):
     def build(self):
         self.setWindowTitle("Please wait...")
         self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
 
-        self.layout = Gui.QVBoxLayout()
+        self.layout = Wid.QVBoxLayout()
 
-        self.label = Gui.QLabel("Getting installed pip packages")
+        self.label = Wid.QLabel("Getting installed pip packages")
         self.layout.addWidget(self.label)
 
         self.setLayout(self.layout)
@@ -284,21 +287,21 @@ class wait_widget(Gui.QWidget):
 
         center_widget(self)
 
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
 
-class output_widget(Gui.QWidget):
+class output_widget(Wid.QWidget):
     def __init__(self, parent=None):
-        Gui.QWidget.__init__(self)
+        Wid.QWidget.__init__(self)
         self.parent = parent
 
     def build(self):
         self.setWindowTitle("Output")
         self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
 
-        self.layout = Gui.QGridLayout()
+        self.layout = Wid.QGridLayout()
 
-        self.output = Gui.QTextBrowser()
+        self.output = Wid.QTextBrowser()
         self.output.setTextColor(Gui.QColor("green"))
         self.output.setStyleSheet("background-color: black;")
 
@@ -313,12 +316,12 @@ class output_widget(Gui.QWidget):
     def data_ready(self):
         text = bytes(self.parent.process.readAll()).decode()
         self.output.append(text)
-        Gui.QApplication.processEvents()
+        Wid.QApplication.processEvents()
 
 
-class entry(Gui.QLineEdit):
+class entry(Wid.QLineEdit):
     def __init__(self, parent=None):
-        Gui.QLineEdit.__init__(self)
+        Wid.QLineEdit.__init__(self)
         self.parent = parent
 
     def keyPressEvent(self, event):
@@ -333,12 +336,12 @@ class entry(Gui.QLineEdit):
             if self.parent.past_items != [] and self.parent.count > -1:
                 self.setText(self.parent.past_items[self.parent.count])
         else:
-            Gui.QLineEdit.keyPressEvent(self, event)
+            Wid.QLineEdit.keyPressEvent(self, event)
 
 
-class add_widget(Gui.QWidget):
+class add_widget(Wid.QWidget):
     def __init__(self, parent=None):
-        Gui.QWidget.__init__(self)
+        Wid.QWidget.__init__(self)
         self.parent = parent
 
     def build(self):
@@ -352,9 +355,9 @@ class add_widget(Gui.QWidget):
         self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
         self.setWindowModality(Core.Qt.ApplicationModal)
 
-        self.layout = Gui.QVBoxLayout()
+        self.layout = Wid.QVBoxLayout()
 
-        self.list = Gui.QListWidget()
+        self.list = Wid.QListWidget()
         self.layout.addWidget(self.list)
 
         self.entry = entry(self)
@@ -363,17 +366,17 @@ class add_widget(Gui.QWidget):
         # for some reason works
         Core.QTimer.singleShot(0, self.entry.setFocus)
 
-        self.sub_layout = Gui.QHBoxLayout()
+        self.sub_layout = Wid.QHBoxLayout()
 
-        self.add_button = Gui.QPushButton("Add")
+        self.add_button = Wid.QPushButton("Add")
         self.sub_layout.addWidget(self.add_button)
 
-        self.remove_button = Gui.QPushButton("Remove")
+        self.remove_button = Wid.QPushButton("Remove")
         self.sub_layout.addWidget(self.remove_button)
 
         self.layout.addLayout(self.sub_layout)
 
-        self.submit_button = Gui.QPushButton("Submit")
+        self.submit_button = Wid.QPushButton("Submit")
         self.layout.addWidget(self.submit_button)
 
         self.setLayout(self.layout)
@@ -394,8 +397,10 @@ class add_widget(Gui.QWidget):
 
         if self.entry.text() != "":
             if self.entry.text() not in self.items:
-                item = Gui.QListWidgetItem(self.entry.text())
-                item.setFlags(item.flags() | Core.Qt.ItemIsEditable | Core.Qt.ItemIsSelectable | Core.Qt.ItemIsDragEnabled)
+                item = Wid.QListWidgetItem(self.entry.text())
+                item.setFlags(item.flags() | Core.Qt.ItemIsEditable |
+                              Core.Qt.ItemIsSelectable |
+                              Core.Qt.ItemIsDragEnabled)
 
                 self.list.addItem(item)
                 self.items.append(self.entry.text())
@@ -425,7 +430,8 @@ class add_widget(Gui.QWidget):
         self.parent.refresh()
 
     def entry_edited(self):
-        if "|" in self.entry.text() or "&" in self.entry.text() or ";" in self.entry.text():
+        if ("|" in self.entry.text() or "&" in self.entry.text() or
+                ";" in self.entry.text()):
             self.entry.setText(self.correct_text)
         else:
             self.correct_text = self.entry.text()
@@ -441,10 +447,10 @@ class add_widget(Gui.QWidget):
         if event.key() == Core.Qt.Key_Delete:
             self.remove()
         else:
-            Gui.QWidget.keyPressEvent(self, event)
+            Wid.QWidget.keyPressEvent(self, event)
 
 
-class table(Gui.QTableWidget):
+class table(Wid.QTableWidget):
     def __init__(self, parent=None):
         super(table, self).__init__(parent)
         self.parent = parent
@@ -457,11 +463,12 @@ class table(Gui.QTableWidget):
 
         for r, row in enumerate(data):
             for c, col in enumerate(row):
-                item = Gui.QTableWidgetItem(str(col))
+                item = Wid.QTableWidgetItem(str(col))
                 item.setFlags(Core.Qt.ItemIsEnabled | Core.Qt.ItemIsSelectable)
                 self.setItem(r, c, item)
 
-        self.setHorizontalHeaderLabels(["Package", "Installed Version", "Latest Version", "Status"])
+        self.setHorizontalHeaderLabels(
+            ["Package", "Installed Version", "Latest Version", "Status"])
         self.resizeRowsToContents()
         self.resizeColumnsToContents()
         self.setColumnWidth(0, 150)
@@ -472,40 +479,42 @@ class table(Gui.QTableWidget):
         for row in range(self.rowCount()):
             if self.item(row, 1).text() != self.item(row, 2).text():
                 self.item(row, 1).setForeground(Gui.QColor("red"))
-                self.setItem(row, 3, Gui.QTableWidgetItem("Out of date"))
+                self.setItem(row, 3, Wid.QTableWidgetItem("Out of date"))
             else:
                 self.item(row, 1).setForeground(Gui.QColor("green"))
-                self.setItem(row, 3, Gui.QTableWidgetItem("Up to date"))
+                self.setItem(row, 3, Wid.QTableWidgetItem("Up to date"))
 
 
-class main_widget(Gui.QWidget):
+class main_widget(Wid.QWidget):
     def build(self):
         self.pip = pip_data()
 
-        self.layout = Gui.QGridLayout()
+        self.layout = Wid.QGridLayout()
 
         self.add_icon = Gui.QIcon("icons/add_icon.png")
-        self.add_button = Gui.QPushButton(self.add_icon, "Add", self)
+        self.add_button = Wid.QPushButton(self.add_icon, "Add", self)
         self.layout.addWidget(self.add_button, 0, 0)
 
         self.delete_icon = Gui.QIcon("icons/delete_icon.png")
-        self.delete_button = Gui.QPushButton(self.delete_icon, "Delete", self)
+        self.delete_button = Wid.QPushButton(self.delete_icon, "Delete", self)
         self.layout.addWidget(self.delete_button, 0, 1)
 
         self.update_icon = Gui.QIcon("icons/update_icon.png")
-        self.update_button = Gui.QPushButton(self.update_icon, "Update", self)
+        self.update_button = Wid.QPushButton(self.update_icon, "Update", self)
         self.layout.addWidget(self.update_button, 0, 3)
 
         self.update_all_icon = Gui.QIcon("icons/update_icon.png")
-        self.update_all_button = Gui.QPushButton(self.update_icon, "Update All", self)
+        self.update_all_button = Wid.QPushButton(
+            self.update_icon, "Update All", self)
         self.layout.addWidget(self.update_all_button, 0, 4)
 
         self.info_icon = Gui.QIcon("icons/info_icon.png")
-        self.info_button = Gui.QPushButton(self.info_icon, "Info", self)
+        self.info_button = Wid.QPushButton(self.info_icon, "Info", self)
         self.layout.addWidget(self.info_button, 0, 8)
 
         self.refresh_icon = Gui.QIcon("icons/refresh_icon.png")
-        self.refresh_button = Gui.QPushButton(self.refresh_icon, "Refresh", self)
+        self.refresh_button = Wid.QPushButton(
+            self.refresh_icon, "Refresh", self)
         self.layout.addWidget(self.refresh_button, 0, 9)
 
         self.table = table(self)
@@ -606,21 +615,21 @@ class main_widget(Gui.QWidget):
         self.refresh_button.setEnabled(True)
 
     def contextMenuEvent(self, event):
-        self.right_click_menu = Gui.QMenu(self)
+        self.right_click_menu = Wid.QMenu(self)
 
-        update_action = Gui.QAction('Update', self)
+        update_action = Wid.QAction('Update', self)
         update_action.triggered.connect(self.update)
         self.right_click_menu.addAction(update_action)
 
-        delete_action = Gui.QAction('Delete', self)
+        delete_action = Wid.QAction('Delete', self)
         delete_action.triggered.connect(self.delete)
         self.right_click_menu.addAction(delete_action)
 
-        info_action = Gui.QAction('Info', self)
+        info_action = Wid.QAction('Info', self)
         info_action.triggered.connect(self.info)
         self.right_click_menu.addAction(info_action)
 
-        self.right_click_menu.popup(Gui.QCursor.pos())
+        self.right_click_menu.popup(Wid.QCursor.pos())
 
     def info(self):
         self.info_button.setEnabled(False)
@@ -636,7 +645,7 @@ class main_widget(Gui.QWidget):
         self.info_button.setEnabled(True)
 
 
-class main_window(Gui.QMainWindow):
+class main_window(Wid.QMainWindow):
     def build(self):
         self.setWindowTitle("PipQt")
         self.setWindowIcon(Gui.QIcon("icons/main_icon.png"))
@@ -646,35 +655,35 @@ class main_window(Gui.QMainWindow):
         mainMenu = self.menuBar()
         fileMenu = mainMenu.addMenu('File')
 
-        menuAction = Gui.QAction('Exit', self)
+        menuAction = Wid.QAction('Exit', self)
         menuAction.triggered.connect(sys.exit)
         fileMenu.addAction(menuAction)
 
         editMenu = mainMenu.addMenu('Edit')
 
-        menuAction = Gui.QAction('Add Packages', self)
+        menuAction = Wid.QAction('Add Packages', self)
         menuAction.triggered.connect(self.main_widget.add)
         editMenu.addAction(menuAction)
 
         editMenu.addSeparator()
 
-        menuAction = Gui.QAction('Refresh Packages', self)
+        menuAction = Wid.QAction('Refresh Packages', self)
         menuAction.triggered.connect(self.main_widget.refresh)
         editMenu.addAction(menuAction)
 
         editMenu.addSeparator()
 
-        menuAction = Gui.QAction('Update Selected Packages', self)
+        menuAction = Wid.QAction('Update Selected Packages', self)
         menuAction.triggered.connect(self.main_widget.update)
         editMenu.addAction(menuAction)
 
-        menuAction = Gui.QAction('Update All Packages', self)
+        menuAction = Wid.QAction('Update All Packages', self)
         menuAction.triggered.connect(self.main_widget.update_all)
         editMenu.addAction(menuAction)
 
         editMenu.addSeparator()
 
-        menuAction = Gui.QAction('Delete Selected Packages', self)
+        menuAction = Wid.QAction('Delete Selected Packages', self)
         menuAction.triggered.connect(self.main_widget.delete)
         editMenu.addAction(menuAction)
 
@@ -685,7 +694,7 @@ class main_window(Gui.QMainWindow):
 
         self.resize(self.width(), 500)
 
-        self.setStatusBar(Gui.QStatusBar().showMessage("Getting pip packages"))
+        self.setStatusBar(Wid.QStatusBar().showMessage("Getting pip packages"))
 
 
 def find_between(s, first, last):
@@ -707,7 +716,7 @@ def center_widget(widget):
 if __name__ == "__main__":
     args = sys.argv
 
-    app = Gui.QApplication(args)
+    app = Wid.QApplication(args)
 
     global main
 
