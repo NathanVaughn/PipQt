@@ -39,7 +39,11 @@ class api:
             self.process.terminate()
             self.process_finished = True
 
-            raise IOError(self.program + " command exited with non-zero response code:\n " + self.process.readAllStandardError().data().decode())
+            raise IOError(
+                self.program
+                + " command exited with non-zero response code:\n "
+                + self.process.readAllStandardError().data().decode()
+            )
 
         # for commands that aren't writing the partial outputs to a widget,
         # force grab all data
@@ -128,7 +132,7 @@ class api:
         alll = self.get_all_packages(skip_cache, output)
         for package in outdated:
             # remove any packages in all package data that occurs in the outdated list
-            alll[:] = [d for d in alll if d.get('name') != package["name"]]
+            alll[:] = [d for d in alll if d.get("name") != package["name"]]
         return outdated + alll
 
     def get_all_packages(self, skip_cache=False, output=None):
@@ -159,6 +163,7 @@ class api:
     def get_updated_packages(self, skip_cache=False, output=None):
         """Returns json of all updated packages"""
         command = ["list", "-u"]
+        # this command actually doesn't return beta packages such as black
 
         if skip_cache or self.updated_cache == None:
             # if the cache should be skipped

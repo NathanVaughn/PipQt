@@ -8,6 +8,7 @@ def center_widget(parent, widget):
 
     widget.move(x, y)
 
+
 def sanitize_text(text):
     """Attempts to sanitize package text from common attack vectors"""
     return re.sub("[|]*[&]*[;]*[\\s]*", "", text)
