@@ -1,5 +1,4 @@
 import sys
-import webbrowser
 
 import PySide2.QtWidgets as QtWidgets
 
