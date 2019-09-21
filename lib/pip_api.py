@@ -139,7 +139,7 @@ class api:
         """Returns json of all packages"""
         command = ["list"]
 
-        if skip_cache or self.all_cache == None:
+        if skip_cache or self.all_cache is None:
             # if the cache should be skipped
             # or if the cache shouldn't be skipped, but there is no cache
             packages = self.get_package_data_from_command(command, output)
@@ -151,7 +151,7 @@ class api:
         """Returns json of all outdated packages"""
         command = ["list", "-o"]
 
-        if skip_cache or self.outdated_cache == None:
+        if skip_cache or self.outdated_cache is None:
             # if the cache should be skipped
             # or if the cache shouldn't be skipped, but there is no cache
             packages = self.get_package_data_from_command(command, output)
